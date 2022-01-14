@@ -1,7 +1,109 @@
-<div class="container" nz-row>
-  <div class="registration">
-    <h1 class="logo">AgroID</h1>
+<div class="container accountId">
+  <div class="regPage" nz-row nzAlign="middle" nzJustify="center">
+    <div class="registration" nz-col nzSm="24" nzMd="12">
+      <h1 class="logo">AgroID</h1>
+      <div class="registration__container" nz-row nzJustify="center">
+        <form nz-col nzSm="20" nzMd="18" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" nzLayout="vertical">
+          <div class="form__header">
+            <h3>Регистрация</h3>
+            <p>Уже есть аккаунт? <a href="#">Войти</a></p>
+          </div>
+          <!--Поле имени-->
+          <div class="fullName" nz-row nzJustify="space-between">
+            <nz-form-item nz-col nzSpan="11">
+              <nz-form-label nzFor="name" nzRequired>Имя</nz-form-label>
+              <nz-form-control nzErrorTip="Некоректное значение в имени">
+                <input nz-input formControlName="name" placeholder="Ваше имя" id="name"/>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-col nzSpan="11">
+              <nz-form-label nzFor="lastName" nzRequired>Фамилия</nz-form-label>
+              <nz-form-control nzErrorTip="Некоректное значение в фамилии">
+                <input nz-input formControlName="lastName" placeholder="Ваша фамилия" id="lastName"/>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
 
+          <!--Поле пароль-->
+          <nz-form-item>
+            <nz-form-label nzFor="password" nzRequired>Пароль</nz-form-label>
+            <nz-form-control nzErrorTip="Длина пароля должна составлять от 5 до 12 символов">
+              <input
+                nz-input
+                type="password"
+                id="password"
+                formControlName="password"
+                placeholder="Введите пароль"
+                (ngModelChange)="updateConfirmValidator()"
+              />
+            </nz-form-control>
+          </nz-form-item>
+
+          <!--Поле подтверждение пароля-->
+          <nz-form-item>
+            <nz-form-label nzFor="checkPassword" nzRequired>Подтвердите пароль</nz-form-label>
+            <nz-form-control [nzErrorTip]="errorTpl">
+              <input nz-input type="password" formControlName="checkPassword" placeholder="Повторите пароль" id="checkPassword" />
+              <ng-template #errorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Пожалуйста подтвердите пароль</ng-container>
+                <ng-container *ngIf="control.hasError('confirm')">
+                  Пароль не совпадает с первым введеным значением!
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+          <!--Поле EMAIL-->
+          <ng-template #phone>
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="email">Введите email адрес</nz-form-label>
+              <nz-form-control nzErrorTip="Некорректное значение email">
+                <input nz-input formControlName="email" id="email" placeholder="Введите ваш Email адрес" />
+              </nz-form-control>
+            </nz-form-item>
+          </ng-template>
+
+
+          <!--Поле телефона-->
+          <div *ngIf="toggle; else phone">
+            <nz-form-item>
+              <nz-form-label nzFor="phoneNumber" nzRequired>Введите номер телефона</nz-form-label>
+              <nz-form-control
+                [nzValidateStatus]="validateForm.controls['phoneNumber']"
+                nzErrorTip="Пожалуйста введите номер телефона">
+                <input formControlName="phoneNumber" id="'phoneNumber'" placeholder="+998701234567" nz-input />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <a style="padding: 4px 0" nz-button nzType="link" (click)="toggleInfo()">{{buttonTxt ? 'У меня нет телефона' : 'У меня нет email адреса'}}</a>
+
+          <!--Условия соглашения-->
+          <nz-form-item nz-row>
+            <nz-form-control >
+              <label nz-checkbox nzRequired formControlName="agree">
+            <span>
+              Принимаю <a href="#">условия</a> использования
+            </span>
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <!--Button-->
+          <nz-form-item class="register-area">
+            <nz-form-control>
+              <button [disabled]="!validateForm.valid" nzSize="large" class="register-btn" style="width: 100%" nzShape="round" nz-button
+                      nzType="primary">Зарегистрироваться</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+    <div class="services" nz-col nzSm="24" nzMd="12">
+      <h3 class="services__title">Наши сервисы</h3>
+      <div class="services__list" nz-row [nzGutter]="[20, 40]" nzJustify="center">
+        <a nz-col nzMd="12" nzXl="8" href="#" class="services__link" *ngFor="let listItem of servicesList">
+          <img src="{{listItem.img}}" alt="serviceImg">
+        </a>
+      </div>
+    </div>
   </div>
-  <div class="services"></div>
 </div>
